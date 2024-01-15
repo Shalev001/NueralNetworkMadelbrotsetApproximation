@@ -24,7 +24,7 @@ public class NetworkGenerator {
         Network mandelbot = new Network(networkInfo);
         
         mandelbot.InitializeRandomBiases(0,1);
-        mandelbot.InitializeRandomWeights(-0.205,0.2);
+        mandelbot.InitializeRandomWeights(-0.259f,0.25f);
         //mandelbot.InitializeWeightsAsIdentities();
         
         try {

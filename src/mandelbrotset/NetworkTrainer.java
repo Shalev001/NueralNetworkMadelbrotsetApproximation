@@ -20,7 +20,7 @@ import mandelbrotSet.Complex;
  */
 public class NetworkTrainer {
 
-    public static void train(Network mandelbot, double learningSpeed, int trainingCycles, Function actiFunc, int repetitions,double ImMin, double ImMax, double ReMin, double ReMax) {
+    public static void train(Network mandelbot, float learningSpeed, int trainingCycles, Function actiFunc, int repetitions,float ImMin, float ImMax, float ReMin, float ReMax) {
 
         /* //code to generate new bot
         
@@ -42,17 +42,17 @@ public class NetworkTrainer {
 
         for (int i = 0; i < trainingCycles; i++) {
 
-            double real = ReMin + (Math.random() * (ReMax - ReMin));
-            double imaginary = ImMin + (Math.random() * (ImMax - ImMin));
+            float real = (float)(ReMin + (Math.random() * (ReMax - ReMin)));
+            float imaginary = (float)(ImMin + (Math.random() * (ImMax - ImMin)));
 
-            double[] input = {(real - ReMin) / (ReMax - ReMin), (imaginary - ImMin) / (ImMax - ImMin)};
+            float[] input = {(real - ReMin) / (ReMax - ReMin), (imaginary - ImMin) / (ImMax - ImMin)};
             
             mandelbot.setInput(new Vector(input));
 
             Complex point = new Complex(real, imaginary);
 
             //getting the number of repetitions compered to how many allowed repetitions
-            double[] reps = {(double) Fractals.Mandelbrot(new Complex(), point, repetitions) / repetitions};
+            float[] reps = {(float) Fractals.Mandelbrot(new Complex(), point, repetitions) / repetitions};
             
             Vector expected = new Vector(reps);
 

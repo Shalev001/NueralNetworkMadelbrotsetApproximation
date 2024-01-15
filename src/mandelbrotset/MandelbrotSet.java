@@ -34,37 +34,37 @@ class MandelbrotSet {
         //Make the frame
         theFrame = new MainFrameUI();
 
-        File loc = new File("C:\\Users\\shale\\OneDrive\\Desktop\\neuralNetworks\\mandelbrotBots\\madelbot4");
+        File loc = new File("C:\\Users\\shale\\OneDrive\\Desktop\\neuralNetworks\\mandelbrotBots\\madelbot5");
         Network mandelbot = Network.importf(loc);
-        int trainingCycles = 10000;
-        double learningSpeed = 0.0009;
+        int trainingCycles = 100000;
+        float learningSpeed = 0.0001f;
         Function actiFunc = new ReLU();
 
         Color color;
 
-        double real = 0;
-        double imaginary = 0;
+        float real = 0;
+        float imaginary = 0;
 
         int repetitions = 100;
         int repMin;
 
-        double scale = 1.7;//50;
+        float scale = 1.7f;//50;
 
-        double xoff = -0.5;//-0.74132652;
-        double yoff = +0.1;//-0.23506;
+        float xoff = -0.5f;//-0.74132652;
+        float yoff = +0.1f;//-0.23506;
 
-        double ImMin = -(2 / scale) + yoff;
-        double ImMax = (2 / scale) + yoff;
-        double ReMin = -(2 / scale) + xoff;
-        double ReMax = (2 / scale) + xoff;
+        float ImMin = -(2 / scale) + yoff;
+        float ImMax = (2 / scale) + yoff;
+        float ReMin = -(2 / scale) + xoff;
+        float ReMax = (2 / scale) + xoff;
 
         int width = 480;
         int height = 480;
 
         int rep = 0;
 
-        double stepRe = (ReMax - ReMin) / width;
-        double stepIm = (ImMax - ImMin) / height;
+        float stepRe = (ReMax - ReMin) / width;
+        float stepIm = (ImMax - ImMin) / height;
 
         int threadnum = 8;
         Multithread[] threads = new Multithread[threadnum];
@@ -78,11 +78,15 @@ class MandelbrotSet {
         int num = 0;
         while (true) {
 
+            NetworkTrainer.train(mandelbot, learningSpeed, trainingCycles, actiFunc, repetitions, ImMin, ImMax, ReMin, ReMax);
             
             num++;
             System.out.println(num);
-            for (double Im = ImMin; Im < ImMax; Im += stepIm) {
-                for (double Re = ReMin; Re < ReMax; Re += stepRe) {
+            
+            
+            
+            for (float Im = ImMin; Im < ImMax; Im += stepIm) {
+                for (float Re = ReMin; Re < ReMax; Re += stepRe) {
                     color = new Color(255, 255, 255);
 
                     try {
@@ -95,14 +99,16 @@ class MandelbrotSet {
                     Complex c = new Complex(Re, Im);
                     Complex z = new Complex(real, imaginary);
 
-                    double[] input = {(Re - ReMin) / (ReMax - ReMin), (Im - ImMin) / (ImMax - ImMin)};
+                    float[] input = {(Re - ReMin) / (ReMax - ReMin), (Im - ImMin) / (ImMax - ImMin)};
 
                     mandelbot.setInput(new Vector(input));
-
+                    
                     mandelbot.compute(actiFunc);
+                    
+                    //System.out.println(mandelbot.getOutput().toString());
 
-                    rep = (int) (mandelbot.getOutput().getValue(0) * repetitions);
-                    //rep = Fractals.Mandelbrot(z,c, repetitions);
+                    //rep = (int) (mandelbot.getOutput().getValue(0) * repetitions);
+                    rep = Fractals.Mandelbrot(z,c, repetitions);
                     //System.out.println(mandelbot.getOutput().getValue(0));
 
                     if (rep > 2) {
@@ -119,14 +125,12 @@ class MandelbrotSet {
                     rep = 0;
 
                 }
-                
-                
-                
                 theFrame.setMandelSetImage(image);
-
             }
-            NetworkTrainer.train(mandelbot, learningSpeed, trainingCycles, actiFunc, repetitions, ImMin, ImMax, ReMin, ReMax);
-
+            
+            
+            //operations to be done between frames
+            
             learningSpeed *= 1;
             System.out.println(learningSpeed);
             //Now that the image has been made pass it over to the panel

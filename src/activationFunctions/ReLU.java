@@ -10,14 +10,14 @@ package activationFunctions;
  */
 public class ReLU implements Function{
     
-    public double compute(double x){
+    public float compute(float x){
         if (x < 0){
             return 0;
         }
         return x;
     }
     
-    public double computeDir(double x){
+    public float computeDir(float x){
         if (x < 0){
             return 0;
         }

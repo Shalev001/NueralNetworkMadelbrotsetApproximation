@@ -12,8 +12,8 @@ public class main {
     
     public static void main(String[] args){
         
-        double[][] contents1 = {{1,2,3,4},{2,3,4,5},{3,4,5,6},{4,5,6,7}};
-        double[] contents2 = {1,2,3,4};
+        float[][] contents1 = {{1,2,3,4},{2,3,4,5},{3,4,5,6},{4,5,6,7}};
+        float[] contents2 = {1,2,3,4};
         
         Matrix mat1 = new Matrix(contents1);
         

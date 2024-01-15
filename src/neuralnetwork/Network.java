@@ -76,11 +76,11 @@ public class Network {
         return splitInput;
     }
 
-    private void setBias(int l, int j, double val) {
+    private void setBias(int l, int j, float val) {
         biases[l].setValue(j, val);
     }
 
-    private void setweight(int l, int j, int k, double val) {
+    private void setweight(int l, int j, int k, float val) {
         weights[l].setVal(j, k, val);
     }
 
@@ -99,16 +99,16 @@ public class Network {
             weight.InitializeAsIdentity();
         }
     }
-    public void InitializeRandomWeights(double min, double max) {
+    public void InitializeRandomWeights(float min, float max) {
         for (Matrix weight : weights) {
             weight.InitializeAsRandom(min, max);
         }
     }
 
-    public void InitializeRandomBiases(double min, double max) {
+    public void InitializeRandomBiases(float min, float max) {
         for (Vector bias : biases) {
             for (int i = 0; i < bias.getDimension(); i++) {
-                bias.setValue(i, min + (Math.random()* (max - min)));
+                bias.setValue(i, (float)(min + (Math.random()* (max - min))));
             }
         }
     }
@@ -151,7 +151,7 @@ public class Network {
         }
     }
 
-    public double findWeightSlope(int l, int j, int k) {
+    public float findWeightSlope(int l, int j, int k) {
         //formula 4
         if (splitInput == 1) {
             return values[l].getValue(k) * errors[l].getValue(j);
@@ -169,22 +169,22 @@ public class Network {
         return real.subtract(expected);
     }
 
-    public double cost(Vector expected, Vector real) {
-        double val = real.subtract(expected).magnitude();
+    public float cost(Vector expected, Vector real) {
+        float val = real.subtract(expected).magnitude();
         return (val * val) / 2;
     }
 
-    public double averageCost(Vector[] expected, Vector[] real) throws VectorDimensionsDoNotMatchException {
+    public float averageCost(Vector[] expected, Vector[] real) throws VectorDimensionsDoNotMatchException {
 
         if (expected.length != real.length) {
             throw new VectorDimensionsDoNotMatchException();
         }
 
-        double sum = 0;
+        float sum = 0;
 
         for (int i = 0; i < expected.length; i++) {
 
-            double val = real[i].subtract(expected[i]).magnitude();
+            float val = real[i].subtract(expected[i]).magnitude();
             sum += (val * val) / 2;
 
         }
@@ -193,7 +193,7 @@ public class Network {
 
     }
 
-    public void batchGradientDiscent_Outdated(Vector expected, double stepSize, Function actiFunc) { // only weights are being changed right now should be modified to change biases as well
+    public void batchGradientDiscent_Outdated(Vector expected, float stepSize, Function actiFunc) { // only weights are being changed right now should be modified to change biases as well
 
         //System.out.println(cost(getOutput(),expected));
         for (int l = 0; l < networkInfo.length - 1; l++) {//for every layer
@@ -204,7 +204,7 @@ public class Network {
 
                     backPropogate(actiFunc, getOutput(), expected);
 
-                    double slope = findWeightSlope(l, j, k);
+                    float slope = findWeightSlope(l, j, k);
 
                     weights[l].setVal(j, k, weights[l].getVal(j, k) - (slope / (slope * slope + 1)) * stepSize);
 
@@ -219,7 +219,7 @@ public class Network {
 
                 backPropogate(actiFunc, getOutput(), expected);
 
-                double slope = findBiasSlope(l).getValue(j);
+                float slope = findBiasSlope(l).getValue(j);
 
                 biases[l].setValue(j, biases[l].getValue(j) - (slope / (slope * slope + 1)) * stepSize);
 
@@ -228,7 +228,7 @@ public class Network {
         //System.out.println(cost(getOutput(),expected));
     }
 
-    public void partialGradientDiscent_Outdated(Vector expected, int numWChanges, int numBChanges, double stepSize, Function actiFunc) { // only weights are being changed right now should be modified to change biases as well
+    public void partialGradientDiscent_Outdated(Vector expected, int numWChanges, int numBChanges, float stepSize, Function actiFunc) { // only weights are being changed right now should be modified to change biases as well
 
         int[] rands = new int[numWChanges];
 
@@ -253,7 +253,7 @@ public class Network {
 
                             backPropogate(actiFunc, getOutput(), expected);
 
-                            double slope = findWeightSlope(l, j, k);
+                            float slope = findWeightSlope(l, j, k);
 
                             weights[l].setVal(j, k, weights[l].getVal(j, k) - (slope / (slope * slope + 1)) * stepSize);
 
@@ -285,7 +285,7 @@ public class Network {
 
                         backPropogate(actiFunc, getOutput(), expected);
 
-                        double slope = findBiasSlope(l).getValue(j);
+                        float slope = findBiasSlope(l).getValue(j);
 
                         biases[l].setValue(j, biases[l].getValue(j) - (slope / (slope * slope + 1)) * stepSize);
 
@@ -297,7 +297,7 @@ public class Network {
         //System.out.println(cost(getOutput(),expected));
     }
 
-    public void stocasticGradientDiscent(Vector expected, double learningSpeed, Function actiFunc) { // only weights are being changed right now should be modified to change biases as well
+    public void stocasticGradientDiscent(Vector expected, float learningSpeed, Function actiFunc) { // only weights are being changed right now should be modified to change biases as well
 
         compute(actiFunc);
 
@@ -333,14 +333,14 @@ public class Network {
             writer.writeInt(size);// the size of each layer
         }
         for (Vector biasvec : biases) {
-            for (double bias : biasvec.getContents()) {
-                writer.writeDouble(bias);//every bias for every perceptron in the network
+            for (float bias : biasvec.getContents()) {
+                writer.writeFloat(bias);//every bias for every perceptron in the network
             }
         }
         for (Matrix weightMat : weights) {
             for (int i = 0; i < weightMat.getDimensions()[0]; i++) {
                 for (int j = 0; j < weightMat.getDimensions()[1]; j++) {
-                    writer.writeDouble(weightMat.getVal(i, j));//every weight
+                    writer.writeFloat(weightMat.getVal(i, j));//every weight
                 }
             }
         }
@@ -368,7 +368,7 @@ public class Network {
             for (int l = 0; l < output.getNetworkInfo().length - 1; l++) {
                 for (int j = 0; j < output.getNetworkInfo()[l + 1]; j++) {
 
-                    double biasVal = reader.readDouble();//getting all the biases
+                    float biasVal = reader.readFloat();//getting all the biases
 
                     output.setBias(l, j, biasVal);
                 }
@@ -380,7 +380,7 @@ public class Network {
 
                     for (int k = 0; k < output.getNetworkInfo()[l]/output.getSplitInput(); k++) {
 
-                        double weightVal = reader.readDouble();
+                        float weightVal = reader.readFloat();
 
                         output.setweight(l, j, k, weightVal);
 

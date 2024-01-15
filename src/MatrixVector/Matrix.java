@@ -10,11 +10,11 @@ package MatrixVector;
  */
 public class Matrix {
 
-    private double[][] contents;
+    private float[][] contents;
     private int[] dimensions;
     boolean isTransposed;
 
-    public Matrix(double[][] contents) {
+    public Matrix(float[][] contents) {
         this.contents = contents;
         dimensions = new int[2];
         dimensions[0] = contents.length;
@@ -24,28 +24,28 @@ public class Matrix {
 
     public Matrix(int[] dimensions) {
         this.dimensions = dimensions;
-        contents = new double[dimensions[0]][dimensions[1]];
+        contents = new float[dimensions[0]][dimensions[1]];
     }
 
     public Matrix(int dimension1, int dimension2) {
         int[] temp = {dimension1, dimension2};
         dimensions = temp;
-        contents = new double[dimension1][dimension2];
+        contents = new float[dimension1][dimension2];
     }
 
-    public double[][] getContents() {
+    public float[][] getContents() {
         return contents;
     }
 
-    public double getVal(int index1, int index2) {
+    public float getVal(int index1, int index2) {
         return contents[index1][index2];
     }
 
-    public void setContents(double[][] contents) {
+    public void setContents(float[][] contents) {
         this.contents = contents;
     }
 
-    public void setVal(int index1, int index2, double val) {
+    public void setVal(int index1, int index2, float val) {
         contents[index1][index2] = val;
     }
 
@@ -67,22 +67,22 @@ public class Matrix {
 
     }
 
-    public void InitializeAsRandom(double min, double max) {
+    public void InitializeAsRandom(float min, float max) {
 
         for (int i = 0; i < dimensions[0]; i++) {
             for (int j = 0; j < dimensions[1]; j++) {
-                contents[i][j] = (Math.random() * (max - min)) + min;
+                contents[i][j] = (float)((Math.random() * (max - min)) + min);
             }
         }
 
     }
     
-    public double entrySum(){
+    public float entrySum(){
         
-        double sum = 0;
+        float sum = 0;
         
-        for(double[] row : contents){
-            for(double colomb : row){
+        for(float[] row : contents){
+            for(float colomb : row){
                 sum += colomb;
             }
         }
@@ -108,7 +108,7 @@ public class Matrix {
         
     }
     
-    public Matrix multiplyScalar(double num){
+    public Matrix multiplyScalar(float num){
         
         Matrix out = new Matrix(dimensions);
         
@@ -133,7 +133,7 @@ public class Matrix {
         for (int i = 0; i < dimensions[0]; i++) {
             for (int j = 0; j < mat.getDimensions()[1]; j++) {
 
-                double sum = 0;
+                float sum = 0;
 
                 for (int k = 0; k < dimensions[1]; k++) {
 
@@ -160,7 +160,7 @@ public class Matrix {
 
         for (int i = 0; i < dimensions[0]; i++) {
 
-            double sum = 0;
+            float sum = 0;
 
             for (int j = 0; j < dimensions[1]; j++) {
                 sum += contents[i][j] * vec.getValue(j);
@@ -183,7 +183,7 @@ public class Matrix {
 
         for (int i = 0; i < dimensions[1]; i++) {
 
-            double sum = 0;
+            float sum = 0;
 
             for (int j = 0; j < dimensions[0]; j++) {
                 sum += contents[j][i] * vec.getValue(j);
@@ -220,7 +220,7 @@ public class Matrix {
             throw new MatrixDimensionsDoNotMatchException();
         }
 
-        double[] vContents = new double[dimensions[0]];
+        float[] vContents = new float[dimensions[0]];
 
         for (int i = 0; i < dimensions[0]; i++) {
             vContents[i] = contents[i][0];

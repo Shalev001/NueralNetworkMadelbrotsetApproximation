@@ -10,11 +10,11 @@ package activationFunctions;
  */
 public class sigmoid implements Function{
     
-    public double compute(double x){
-        return (1/(1+Math.pow(Math.E,-x)));
+    public float compute(float x){
+        return (float)(1/(1+Math.pow(Math.E,-x)));
     }
     
-    public double computeDir(double x){
+    public float computeDir(float x){
         return compute(x) * (1 - compute(x));
     }
     

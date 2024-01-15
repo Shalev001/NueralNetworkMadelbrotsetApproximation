@@ -13,44 +13,44 @@ import activationFunctions.*;
 public class Vector {
 
     private int dimension;
-    private double[] contents;
+    private float[] contents;
 
-    public Vector(double[] contents) {
+    public Vector(float[] contents) {
         this.contents = contents;
         dimension = contents.length;
     }
     
     public Vector(int dimension){
         this.dimension = dimension;
-        contents = new double[dimension];
+        contents = new float[dimension];
     }
 
     public int getDimension() { // no setter for dimension since it is dependent on the contents
         return dimension;
     }
 
-    public double[] getContents() {
+    public float[] getContents() {
         return contents;
     }
 
-    public void setContents(double[] contents) {
+    public void setContents(float[] contents) {
         this.contents = contents;
         dimension = contents.length;
     }
 
-    public void setValue(int index, double value) {
+    public void setValue(int index, float value) {
         contents[index] = value;
     }
 
-    public double getValue(int index) {
+    public float getValue(int index) {
         return contents[index];
     }
     
-    public double entrySum(){
+    public float entrySum(){
         
-        double sum = 0;
+        float sum = 0;
         
-        for (double entry : contents) {
+        for (float entry : contents) {
             sum += entry;
         }
         
@@ -87,7 +87,7 @@ public class Vector {
         
         int index = 0;
         for (Vector vec : vecs) {
-            for(double num : vec.getContents()){
+            for(float num : vec.getContents()){
                 out.setValue(index, num);
                 index++;
             }
@@ -96,7 +96,7 @@ public class Vector {
         return out;
     }
 
-    public Vector multiplyScalar(double num) throws VectorDimensionsDoNotMatchException {
+    public Vector multiplyScalar(float num) throws VectorDimensionsDoNotMatchException {
 
         Vector out = new Vector(contents);
         
@@ -108,10 +108,10 @@ public class Vector {
         
     }
     
-    public double dotProduct(Vector vector) throws VectorDimensionsDoNotMatchException {
+    public float dotProduct(Vector vector) throws VectorDimensionsDoNotMatchException {
 
-        double result = 0;
-        double[] vectorContents = vector.getContents();
+        float result = 0;
+        float[] vectorContents = vector.getContents();
 
         if (dimension != vector.getDimension()) {
             throw new VectorDimensionsDoNotMatchException();
@@ -123,11 +123,11 @@ public class Vector {
         return result;
     }
 
-    public static double dotProduct(Vector vector1, Vector vector2) throws VectorDimensionsDoNotMatchException {
+    public static float dotProduct(Vector vector1, Vector vector2) throws VectorDimensionsDoNotMatchException {
 
-        double result = 0;
-        double[] vector1Contents = vector1.getContents();
-        double[] vector2Contents = vector2.getContents();
+        float result = 0;
+        float[] vector1Contents = vector1.getContents();
+        float[] vector2Contents = vector2.getContents();
 
         if (vector1.getDimension() != vector2.getDimension()) {
             throw new VectorDimensionsDoNotMatchException();
@@ -159,27 +159,27 @@ public class Vector {
         return out;
     }
     
-    public static double magnitude(Vector vector) {
+    public static float magnitude(Vector vector) {
 
-        double squaresum = 0;
+        float squaresum = 0;
 
-        for (double num : vector.getContents()) {
+        for (float num : vector.getContents()) {
             squaresum += num * num;
         }
 
-        return Math.sqrt(squaresum);
+        return (float)Math.sqrt(squaresum);
 
     }
 
-    public double magnitude() {
+    public float magnitude() {
 
-        double squaresum = 0;
+        float squaresum = 0;
 
-        for (double num : contents) {
+        for (float num : contents) {
             squaresum += num * num;
         }
 
-        return Math.sqrt(squaresum);
+        return (float)Math.sqrt(squaresum);
 
     }
 
@@ -189,8 +189,8 @@ public class Vector {
             throw new VectorDimensionsDoNotMatchException();
         }
         
-        double[] vectorContents = vector.getContents();
-        double[] out = contents.clone();
+        float[] vectorContents = vector.getContents();
+        float[] out = contents.clone();
 
         for (int i = 0; i < dimension; i++) {
             out[i] += vectorContents[i];
@@ -202,9 +202,9 @@ public class Vector {
 
     public static Vector add(Vector vector1, Vector vector2) {
 
-        double[] vector1Contents = vector1.getContents();
-        double[] vector2Contents = vector2.getContents();
-        double[] result = new double[vector1.getDimension()];
+        float[] vector1Contents = vector1.getContents();
+        float[] vector2Contents = vector2.getContents();
+        float[] result = new float[vector1.getDimension()];
 
         if (vector1.getDimension() != vector2.getDimension()) {
             throw new VectorDimensionsDoNotMatchException();
@@ -224,8 +224,8 @@ public class Vector {
             throw new VectorDimensionsDoNotMatchException();
         }
         
-        double[] vectorContents = vector.getContents();
-        double[] out = contents.clone();
+        float[] vectorContents = vector.getContents();
+        float[] out = contents.clone();
         int sum = 0;
         
         for (int i = 0; i < dimension; i++) {
@@ -239,9 +239,9 @@ public class Vector {
 
     public static Vector subtract(Vector vector1, Vector vector2) {
 
-        double[] vector1Contents = vector1.getContents();
-        double[] vector2Contents = vector2.getContents();
-        double[] result = new double[vector1.getDimension()];
+        float[] vector1Contents = vector1.getContents();
+        float[] vector2Contents = vector2.getContents();
+        float[] result = new float[vector1.getDimension()];
 
         if (vector1.getDimension() != vector2.getDimension()) {
             throw new VectorDimensionsDoNotMatchException();
@@ -259,7 +259,7 @@ public class Vector {
     
     public Vector applyFunction(Function func){
         
-        double[] out = contents.clone();
+        float[] out = contents.clone();
         
         for (int i = 0; i < out.length; i++) {
             out[i] = func.compute(out[i]);
@@ -270,7 +270,7 @@ public class Vector {
     
     public Vector applyDir(Function func){
         
-        double[] out = contents.clone();
+        float[] out = contents.clone();
         
         for (int i = 0; i < out.length; i++) {
             out[i] = func.computeDir(out[i]);
@@ -294,7 +294,7 @@ public class Vector {
     public String toString() {
         String str = "[";
 
-        for (double num : contents) {
+        for (float num : contents) {
             str += num + ",";
         }
 

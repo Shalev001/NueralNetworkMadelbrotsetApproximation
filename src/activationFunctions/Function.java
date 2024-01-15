@@ -10,7 +10,7 @@ package activationFunctions;
  */
 public interface Function {
     
-    public double compute(double x);//a method to compute the valueof the function
-    public double computeDir(double x);//a method to compute the value of the derivitive
+    public float compute(float x);//a method to compute the valueof the function
+    public float computeDir(float x);//a method to compute the value of the derivitive
     
 }
